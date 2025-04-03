@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import Down_animation from "@/../public/Down_animation.json";
 import Up_animation from "@/../public/Up_animation.json";
 import Lottie from "lottie-react";
@@ -11,7 +11,19 @@ import {
   SquareArrowOutUpRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-function HeaderCard() {
+
+interface HeaderCardProp {
+  open: boolean;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+}
+
+function HeaderCard({ open, setOpen }: HeaderCardProp) {
+
+
+  const handleEditDialog = () => {
+    setOpen(true);
+  };
+
   return (
     <div className=" border h-full  flex items-center justify-between w-full  px-4  py-8  rounded-md  border-sidebar-accent">
       <div className="  h-full flex items-center gap-2x">
@@ -46,7 +58,7 @@ function HeaderCard() {
           </span>
           <span>Test alert</span>
         </Button>
-        <Button className=" text-secondary-foreground" variant={"secondary"}>
+        <Button className=" text-secondary-foreground" onClick={handleEditDialog} variant={"secondary"}>
           <span>
             <Settings className=" size-4" />
           </span>
