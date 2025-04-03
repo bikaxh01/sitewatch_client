@@ -5,6 +5,9 @@ import React, { useEffect, useState } from "react";
 import { useDebounce } from "@uidotdev/usehooks";
 import axios from "axios";
 import { setMaxListeners } from "events";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 function page() {
   const [showPassword, setShowPassword] = useState(true);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -16,6 +19,8 @@ function page() {
   const [disableButton, setDisableButton] = useState(true);
   const debouncedEmail = useDebounce(email, 500);
   const [emailMessage, setEmailMessage] = useState<any>(null);
+
+  const router = useRouter();
 
   useEffect(() => {
     // check email
@@ -57,7 +62,7 @@ function page() {
     if (
       firstName.length > 0 &&
       email.length > 0 &&
-      password.length > 0 &&
+      password.length > 7 &&
       confirmPassword.length > 0
     ) {
       if (password === confirmPassword) {
@@ -69,13 +74,27 @@ function page() {
     setDisableButton(true);
   }, [password, confirmPassword, firstName, email]);
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
-    console.log("🚀 ~ handleSubmit ~ e:", password);
-    console.log("🚀 ~ handleSubmit ~ e:", firstName);
-    console.log("🚀 ~ handleSubmit ~ e:", email);
-    console.log("🚀 ~ handleSubmit ~ e:", lastName);
-    console.log("🚀 ~ handleSubmit ~ e:", confirmPassword);
+
+    try {
+      const inputData = {
+        firstName,
+        lastName,
+        email,
+        password,
+        signUpType: "PASSWORD",
+      };
+
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL as string}/user/email-sign-up`,
+        inputData
+      );
+      toast.success(res.data.message,{id:"sign-up toast"});
+      router.push("/auth/sign-in");
+    } catch (error: any) {
+      toast.error(error.response.data.message,{id:"sign-up toast"});
+    }
   };
 
   return (
@@ -84,7 +103,7 @@ function page() {
         <h1 className=" text-2xl font-bold">Sign up for free</h1>
         <p className=" text-xs text-muted-foreground/80">
           Already have an account ?{" "}
-          <span className="  text-blue-600 underline">sign In</span>
+          <Link href={'/auth/sign-in'} className="  text-blue-600 underline">sign In</Link>
         </p>
       </div>
       <div>
