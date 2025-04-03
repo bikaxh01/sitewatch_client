@@ -159,7 +159,7 @@ function page() {
             <label className=" text-xs text-muted-foreground">Password</label>
             <div className="flex">
               <input
-                className=" w-96 z-10  border-2  border-r-0 flex  h-10 rounded-l-md text-sm p-2"
+                className=" w-full z-10  border-2  border-r-0 flex  h-10 rounded-l-md text-sm p-2"
                 name="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value.trim())}
@@ -182,7 +182,7 @@ function page() {
             </label>
             <div className="flex">
               <input
-                className=" w-96 z-10  border-2  border-r-0 flex  h-10 rounded-l-md text-sm p-2"
+                className=" w-full z-10  border-2  border-r-0 flex  h-10 rounded-l-md text-sm p-2"
                 name="ConfirmPassword"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value.trim())}

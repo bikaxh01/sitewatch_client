@@ -33,17 +33,17 @@ function page() {
         data,
         {
           withCredentials: true,
-         headers:{
-          "Content-Types":"application/json"
-         }
+          headers: {
+            "Content-Types": "application/json",
+          },
         }
       );
-      console.log("🚀 ~ handleSubmit ~ res:", res)
-      toast.success(res.data.message);
-      router.push("/monitors");
+      if (res.data.success) {
+        toast.success(res.data.message);
+        router.push("/monitors");
+      }
     } catch (error: any) {
       toast.error(error.response.data.message);
-      console.log("🚀 ~ handleSubmit ~ error:", error);
     }
   };
 
@@ -84,7 +84,7 @@ function page() {
           <div className="flex">
             <input
               type={showPassword ? "text" : "password"}
-              className="w-96 z-10  border-2  border-r-0 flex  h-10 rounded-l-md text-sm p-2"
+              className="w-full z-10  border-2  border-r-0 flex  h-10 rounded-l-md text-sm p-2"
               value={password}
               onChange={(e) => setPassword(e.target.value.trim())}
             />
